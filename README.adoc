@@ -1,0 +1,184 @@
+:toc:
+:toc-placement: preamble
+:experimental:
+
+= From bits to the cloud
+
+The syllabus of this course is not strictly academic. Most of the material is adapted in such a
+way that answers a great lot of questions found in systems interviews. As such, it is modelled after a
+Questions 'n Answers structure.
+
+
+
+== Host-level storage
+
+=== Physical storage media
+* What is a bit and how is it physically represented
+* What is a byte and how is it physically represented
+
+* Compare mechanical/electrical, bit preservation, sequential throughput, seek time, # of channels, placement
+
+==== Controller - based
+* What is a (physical) device controller ?
+* Hard-disks, SSDs, NVM-e, Memory
+
+==== Drive - based
+* What are the differences between controllers and drives
+* Tapes, cds, floppys, Zips
+
+
+=== Block devices
+
+==== Access protocol
+* Local: Host bus adapter, SCSI, SATA
+
+==== Addressing schema
+* Geometry-aware addressing
+* Block-level addressing
+* RAID
+* Device mapper
+
+==== Memory layer
+* Staging from Memory to disk (swap)
+* virtual memory (pages)
+* write(), read(), mmap() ...
+* What is page fault
+
+==== Access patterns and workloads
+* sequential, matrix, strides
+* side effects: fragmentation, misalignment
+
+=== Filesystem
+* Disadvantage of block devices: no hierarchy
+
+==== Data versus metadata
+* What makes a file
+. Logical representation of attributes, data blocks, ....
+
+* Metadata (in a filesystem)
+. Superblocks, denties, inodes,
+
+* Structures
+. btrees, log-based (in relation to workload/underlying devices)
+
+==== Crash resiliency
+
+==== Backup
+* full, incremental,  differential
+* Periodic data scrubbing
+
+==== Atomic operations
+* Journals
+* Copy-on-write (to avoid double writes)
+* ACID
+
+===== Virtual file system
+* Mountpoints for various filesystems (ext4, brfs, FUSE, ...)
+* Special purpose (e.g., /proc, overlay)
+* POSIX VFS for fs unification
+. File descriptors
+
+
+===== Exercise 1:
+. Use LVM to create a RAID-1 block device
+. Create a fuse-based filesystem (bindings for several languages) atop the virtual block device
+. Measure with fio the times for metadata operations / data transfers
+. Identify impact on various access patterns
+. Identify how fuse breaks user data to fs blocks
+. Open a file, populate with data, remove file. Why space is still occupied ? (still opened descriptor)
+
+
+== Storage in a Data center
+
+=== Storage Area Network
+* SAN, tape library
+* JBOD (Just a bunch of disks), storage pools
+* LUNS
+* Remote: infiniband, fibre, iSCSI
+* SAN-based filesystems
+
+
+=== Network Attached Storage
+* NFS, SMB
+* Clustered
+* Distributed
+
+==== Node-To-Node communication
+* RPC and Serialization
+* Connection Multiplexing
+* Delivery order (at least one, at most one, exactly one)
+* Connection failure: Locking vs leases (timeout)
+
+==== Distributed Operations
+* Sharding
+* Anonymizing
+* Replication
+* Availability (replicas vs erasure coding)
+
+
+=== Software defined storage
+
+==== Architectures
+* Shared nothing
+* Shared everything
+* NUMA / NON-NUMA
+
+==== Data placement / addressing
+. Content-addressable (Algorithmic calculation of location, replica-aware)
+. Lookup (discovery)
+
+==== Membership/Service discovery
+* DNS
+* Lookup (zookeeper)
+* Epidemic protocols
+
+=== APIs
+* Embedded
+* SQL
+* Column
+* Key/value
+* Multi-value
+
+
+
+
+
+
+
+===== Exercise 2:
+. Replace the virtual block device of exc1 with distributed replication
+. Measure the fuse-based filesystem with IOR (requires mpi)
+. Identify that it results to corrupted data
+. Expand the fuse-based filesystem to support distributed locking
+. Identify significant delays
+
+
+
+
+===== Exercise 3:
+. Do not hardcode IP/hostnames/dns entries
+. Use Consul/Redis for service discovery
+. Add/remove instances, and resuffle the data (e.g., consistent hashing)
+
+
+== Cloud
+* Why move from datacenters to the Cloud
+
+=== Gateways
+
+=== Hybrid/MultiCloud
+
+
+
+== Questions
+
+* Difference between blocking and non-blocking operations
+* what happens when you type ls in the terminal
+* Differences between replication (distributed) and mirroring (local)
+* Mention advantages/disadvantages of backup/journal/raid (in terms of "accidental data removal")
+* What are the differences between pages and blocks
+* Mention advantages / disadvantages for each storage device
+* What happens on block misalignment
+* What is the difference between RAID and JBOD
+* Differences between page fault and swap
+
