@@ -9,33 +9,44 @@ way that answers a great lot of questions found in systems interviews. As such, 
 Questions 'n Answers structure.
 
 
+== Physical devices 
 
-== Host-level storage
-
-=== Physical storage media
+==== Introduction
 * What is a bit and how is it physically represented
 * What is a byte and how is it physically represented
+* Performance: Seektime, sequential throughput, # of channels
 
-* Compare mechanical/electrical, bit preservation, sequential throughput, seek time, # of channels, placement
+==== Electromechanical (rotating) devices
+* Disks
+* Tapes
+* Cds
+* Floppys, zips 
 
-==== Controller - based
-* What is a (physical) device controller ?
-* Hard-disks, SSDs, NVM-e, Memory
+==== Electrical (non-rotating) devices
+* Flash
+* SSDs
+* NVMe
 
-==== Drive - based
-* What are the differences between controllers and drives
-* Tapes, cds, floppys, Zips
+==== Access
+* Controllers vs drives
+* Physical Access (host bus adapter)
+* Protocols (SCSI, SATA)
+* bit preservation (compression / encryption ...)
 
+==== Arrays
+* JBOD (Just a bunch of disks), storage pools
+* RAID (Local: Host bus adapter)
+* SAN (Remote: infiniband, fibre, iSCSI, LUNs)
+* Tape library
+
+
+== Abstractions 
 
 === Block devices
 
-==== Access protocol
-* Local: Host bus adapter, SCSI, SATA
-
-==== Addressing schema
+==== Virtualization
 * Geometry-aware addressing
 * Block-level addressing
-* RAID
 * Device mapper
 
 ==== Memory layer
@@ -44,22 +55,63 @@ Questions 'n Answers structure.
 * write(), read(), mmap() ...
 * What is page fault
 
+
 ==== Access patterns and workloads
-* sequential, matrix, strides
+* sequential, matrix, strides (link with device properties)
 * side effects: fragmentation, misalignment
 
-=== Filesystem
-* Disadvantage of block devices: no hierarchy
 
-==== Data versus metadata
-* What makes a file
+=== Filesystem
+* Disadvantage of block devices: no hierarchy, no metadata
+
+==== Virtual file system
+* Mountpoints for various filesystems (ext4, brfs, FUSE, ...)
+* Special purpose (e.g., /proc, overlay)
+* POSIX VFS for fs unification
+. File descriptors
+
+==== What makes a file
 . Logical representation of attributes, data blocks, ....
 
+==== What makes a filesystem
 * Metadata (in a filesystem)
 . Superblocks, denties, inodes,
 
-* Structures
+* Indexing Structures
 . btrees, log-based (in relation to workload/underlying devices)
+
+==== Network Attached Storage
+* NFS, SMB
+* Clustered
+* Distributed
+
+=== Object Storage
+* Disadvantage of filesystems : minimum metadata, overhead of block-based access
+
+==== Data placement / addressing
+. Content-addressable (Algorithmic calculation of location, replica-aware)
+. Lookup (discovery)
+
+
+=== Databases
+* Filesystems/Object storage are excellent on storing data/metadata, but suck on search (querying)
+
+==== Database Query language
+* Embedded
+* SQL
+* Column
+* Key/value
+* Multi-value
+
+
+===== Exercise 1:
+. Use LVM to create a RAID-1 block device
+. Create a fuse-based filesystem (bindings for several languages) atop the virtual block device
+. Measure with fio the times for metadata operations / data transfers
+. Identify impact on various access patterns
+. Identify how fuse breaks user data to fs blocks
+. Open a file, populate with data, remove file. Why space is still occupied ? (still opened descriptor)
+
 
 ==== Crash resiliency
 
@@ -72,36 +124,13 @@ Questions 'n Answers structure.
 * Copy-on-write (to avoid double writes)
 * ACID
 
-===== Virtual file system
-* Mountpoints for various filesystems (ext4, brfs, FUSE, ...)
-* Special purpose (e.g., /proc, overlay)
-* POSIX VFS for fs unification
-. File descriptors
-
-
-===== Exercise 1:
-. Use LVM to create a RAID-1 block device
-. Create a fuse-based filesystem (bindings for several languages) atop the virtual block device
-. Measure with fio the times for metadata operations / data transfers
-. Identify impact on various access patterns
-. Identify how fuse breaks user data to fs blocks
-. Open a file, populate with data, remove file. Why space is still occupied ? (still opened descriptor)
-
-
 == Storage in a Data center
 
-=== Storage Area Network
-* SAN, tape library
-* JBOD (Just a bunch of disks), storage pools
-* LUNS
-* Remote: infiniband, fibre, iSCSI
-* SAN-based filesystems
-
-
-=== Network Attached Storage
-* NFS, SMB
-* Clustered
-* Distributed
+==== Distributed Operations
+* Sharding
+* Anonymizing
+* Replication
+* Availability (replicas vs erasure coding)
 
 ==== Node-To-Node communication
 * RPC and Serialization
@@ -109,11 +138,10 @@ Questions 'n Answers structure.
 * Delivery order (at least one, at most one, exactly one)
 * Connection failure: Locking vs leases (timeout)
 
-==== Distributed Operations
-* Sharding
-* Anonymizing
-* Replication
-* Availability (replicas vs erasure coding)
+==== Membership/Service discovery
+* DNS
+* Lookup (zookeeper)
+* Epidemic protocols
 
 
 === Software defined storage
@@ -122,23 +150,6 @@ Questions 'n Answers structure.
 * Shared nothing
 * Shared everything
 * NUMA / NON-NUMA
-
-==== Data placement / addressing
-. Content-addressable (Algorithmic calculation of location, replica-aware)
-. Lookup (discovery)
-
-==== Membership/Service discovery
-* DNS
-* Lookup (zookeeper)
-* Epidemic protocols
-
-=== APIs
-* Embedded
-* SQL
-* Column
-* Key/value
-* Multi-value
-
 
 
 
