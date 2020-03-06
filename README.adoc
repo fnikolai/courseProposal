@@ -104,14 +104,6 @@ Questions 'n Answers structure.
 * Multi-value
 
 
-===== Exercise 1:
-. Use LVM to create a RAID-1 block device
-. Create a fuse-based filesystem (bindings for several languages) atop the virtual block device
-. Measure with fio the times for metadata operations / data transfers
-. Identify impact on various access patterns
-. Identify how fuse breaks user data to fs blocks
-. Open a file, populate with data, remove file. Why space is still occupied ? (still opened descriptor)
-
 
 ==== Crash resiliency
 
@@ -132,6 +124,11 @@ Questions 'n Answers structure.
 * Replication
 * Availability (replicas vs erasure coding)
 
+==== Architectures
+* Shared nothing
+* Shared everything
+* NUMA / NON-NUMA
+
 ==== Node-To-Node communication
 * RPC and Serialization
 * Connection Multiplexing
@@ -146,42 +143,32 @@ Questions 'n Answers structure.
 
 === Software defined storage
 
-==== Architectures
-* Shared nothing
-* Shared everything
-* NUMA / NON-NUMA
 
-
-
-
-
-
-===== Exercise 2:
-. Replace the virtual block device of exc1 with distributed replication
-. Measure the fuse-based filesystem with IOR (requires mpi)
-. Identify that it results to corrupted data
-. Expand the fuse-based filesystem to support distributed locking
-. Identify significant delays
-
-
-
-
-===== Exercise 3:
-. Do not hardcode IP/hostnames/dns entries
-. Use Consul/Redis for service discovery
-. Add/remove instances, and resuffle the data (e.g., consistent hashing)
 
 
 == Cloud
 * Why move from datacenters to the Cloud
-
-=== Gateways
-
-=== Hybrid/MultiCloud
+==== Hybrid/MultiCloud
+==== Gateways
 
 
+== Edge
+* Why move from Cloud to the Edge
 
-== Questions
+
+
+
+
+
+
+== Excercices
+
+These excercises form a vital part of the course. We suggest that you take a blank piece of paper and jot you answer down, with the number of the question beside it. 
+
+Some questions involve multiple-choice answers. While these are not a good learning aid (continually reading incorrect statements is confusing), many of the exams you will do in the course will use this method of questioning. A good technique in answering multi-choice questions is, prior to reading through the selection, think in your own mind what the asnwer might be. 
+
+Many other excercises contain alternative answers (e.g., may/should) or ask you to fill the blank (e.g., rotating disks are best for .... purposes)
+
 
 * Difference between blocking and non-blocking operations
 * what happens when you type ls in the terminal
@@ -193,3 +180,24 @@ Questions 'n Answers structure.
 * What is the difference between RAID and JBOD
 * Differences between page fault and swap
 
+== Excercises
+
+===== Exercise 1:
+. Use LVM to create a RAID-1 block device
+. Create a fuse-based filesystem (bindings for several languages) atop the virtual block device
+. Measure with fio the times for metadata operations / data transfers
+. Identify impact on various access patterns
+. Identify how fuse breaks user data to fs blocks
+. Open a file, populate with data, remove file. Why space is still occupied ? (still opened descriptor)
+
+===== Exercise 2:
+. Replace the virtual block device of exc1 with distributed replication
+. Measure the fuse-based filesystem with IOR (requires mpi)
+. Identify that it results to corrupted data
+. Expand the fuse-based filesystem to support distributed locking
+. Identify significant delays
+
+===== Exercise 3:
+. Do not hardcode IP/hostnames/dns entries
+. Use Consul/Redis for service discovery
+. Add/remove instances, and resuffle the data (e.g., consistent hashing)
