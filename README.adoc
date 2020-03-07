@@ -201,3 +201,7 @@ Many other excercises contain alternative answers (e.g., may/should) or ask you 
 . Do not hardcode IP/hostnames/dns entries
 . Use Consul/Redis for service discovery
 . Add/remove instances, and resuffle the data (e.g., consistent hashing)
+
+
+== Ideas
+https://courses.lumenlearning.com/suny-ap2/chapter/gas-exchange/
