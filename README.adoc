@@ -4,6 +4,8 @@
 
 = From bits to the cloud
 
+This class will examine file system implementation, low-level database storage techniques, and distributed programming. Lectures will cover basic file system structures, journaling and logging, I/O system performance, RAID, the RPC abstraction, and numerous systems illustrating these concepts. Programming assignments will make the topics more concrete. In a final project, students will build a real, functioning UNIX file system. Topics: file systems, distributed computing, replication and consistency, crash recovery. Students will have access to dedicated equipment for the assignments and projects. 
+
 The syllabus of this course is not strictly academic. Most of the material is adapted in such a
 way that answers a great lot of questions found in systems interviews. As such, it is modelled after a
 Questions 'n Answers structure.
@@ -112,6 +114,7 @@ Questions 'n Answers structure.
 * Periodic data scrubbing
 
 ==== Atomic operations
+* SoftUpdates
 * Journals
 * Copy-on-write (to avoid double writes)
 * ACID
@@ -123,6 +126,7 @@ Questions 'n Answers structure.
 * Anonymizing
 * Replication
 * Availability (replicas vs erasure coding)
+* Anti-Entropy 
 
 ==== Architectures
 * Shared nothing
